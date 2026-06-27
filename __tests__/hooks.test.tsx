@@ -62,6 +62,39 @@ describe('usePractices — data-fetching states', () => {
   });
 });
 
+describe('useMarkComplete — optimistic update and rollback on failure', () => {
+  it('flips completed_today optimistically, then rolls back when the server 500s', async () => {
+    const { wrapper, queryClient } = createQueryWrapper();
+    // Seed the cache as the List would have.
+    queryClient.setQueryData<Practice[]>(queryKeys.practices, db.list());
+
+    const cached = (id: string) =>
+      queryClient
+        .getQueryData<Practice[]>(queryKeys.practices)
+        ?.find(p => p.id === id);
+
+    // practice-2 is seeded as pending; force its next complete mutation to 500.
+    expect(cached('practice-2')?.completed_today).toBe(false);
+    db.setForcedError('practice-2');
+
+    const { result } = await renderHook(() => useMarkComplete('practice-2'), {
+      wrapper,
+    });
+
+    result.current.mutate();
+
+    // Optimistic: the cache flips to completed before the server responds.
+    await waitFor(() =>
+      expect(cached('practice-2')?.completed_today).toBe(true),
+    );
+
+    // The server 500s, so onError rolls the cache back to the snapshot — the
+    // practice stays in the list (it was not deleted) and is pending again.
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(cached('practice-2')?.completed_today).toBe(false);
+  });
+});
+
 describe('useMarkComplete — deleted-practice edge case', () => {
   it('rolls back, removes the practice from the cache, and notifies on 404', async () => {
     const { wrapper, queryClient } = createQueryWrapper();
