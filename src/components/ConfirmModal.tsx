@@ -27,6 +27,15 @@ export function ConfirmModal({
       visible={visible}
       transparent
       animationType="fade"
+      // Without this, iOS forces the modal (and the screen behind it) back to
+      // portrait while it's open. Allow every orientation so it stays put.
+      supportedOrientations={[
+        'portrait',
+        'portrait-upside-down',
+        'landscape',
+        'landscape-left',
+        'landscape-right',
+      ]}
       onRequestClose={onCancel}>
       <Pressable style={styles.overlay} onPress={onCancel}>
         {/* Stop propagation so taps inside the card don't dismiss it. */}
