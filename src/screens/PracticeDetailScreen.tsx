@@ -144,7 +144,8 @@ export function PracticeDetailScreen({ route, navigation }: Props) {
       contentContainerStyle={[
         styles.content,
         { paddingBottom: insets.bottom + spacing.xl },
-      ]}>
+      ]}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.headerRow}>
         <View style={[styles.chip, { backgroundColor: accent }]}>
           <Text style={styles.chipText}>{practice.category}</Text>
