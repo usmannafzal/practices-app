@@ -3,6 +3,11 @@
 Being upfront: most of this project's code was AI-generated. I drove the
 thinking — understanding the requirements, the architecture choices, reviewing
 output, and catching mistakes — and let the AI write most of the implementation.
+The split is deliberate: I treated the AI as the implementer and myself as the
+architect and reviewer. The 5% I hand-wrote is small because typing wasn't where
+I added value — every diff was checked against the requirements document and the
+running app, and the calls that mattered (state, mock layer, hook boundaries)
+were mine.
 
 ## 1. Tools and rough mix
 
