@@ -19,11 +19,11 @@ mock network starts itself with the app.
 
 ~4 hours:
 
-- Setup + mock network — 45m
+- Setup + mock network — 50m
 - Navigation + list + states — 30m
 - Detail + mutations + optimistic update — 50m
-- Summary + responsive — 30m
-- Tests + docs — 1h 20m
+- Summary + responsive — 50m
+- Tests + docs — 1h
 
 ## State management — React Query, one shared cache
 
